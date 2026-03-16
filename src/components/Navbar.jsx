@@ -31,7 +31,7 @@ export default function Navbar({ theme, toggleTheme }) {
 
         {/* Logo */}
         <span className="text-lg font-bold cursor-default select-none">
-          <span className={dark ? 'text-white' : 'text-gray-900'}>abel</span>
+          <span className={dark ? 'text-white' : 'text-gray-900'}>abel's</span>
           <span className="text-violet-500"> Portfolio</span>
         </span>
 
