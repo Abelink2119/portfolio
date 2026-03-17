@@ -50,7 +50,7 @@ export default function AboutSection({ theme }) {
                 Get In Touch
               </button>
               <a
-                href="/resume.pdf"
+                href="/Abel's Resume.pdf"
                 download="Abel's Resume.pdf"
                 className={`px-6 py-2.5 rounded-full border text-sm font-medium transition-all duration-200 inline-flex items-center gap-2 ${
                   dark
