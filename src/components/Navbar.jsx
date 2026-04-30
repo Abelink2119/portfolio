@@ -3,7 +3,7 @@ import ThemeToggle from './ThemeToggle'
 
 const links = ['Home', 'About', 'Skills', 'Experience', 'Projects', 'Certifications', 'Contact']
 
-export default function Navbar({ theme, toggleTheme }) {
+export default function Navbar({ theme, mode, setMode }) {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
   const dark = theme === 'dark'
@@ -52,7 +52,7 @@ export default function Navbar({ theme, toggleTheme }) {
         </ul>
 
         <div className="flex items-center gap-3">
-          <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
+          <ThemeToggle theme={theme} mode={mode} setMode={setMode} />
 
           {/* Hamburger */}
           <button
