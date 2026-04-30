@@ -7,17 +7,16 @@ const cards = [
 ]
 
 function CVModal({ onClose }) {
-  // Close on backdrop click
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
+
   const handleBackdrop = (e) => { if (e.target === e.currentTarget) onClose() }
 
-  // Close on Escape key
   useEffect(() => {
     const handler = (e) => { if (e.key === 'Escape') onClose() }
     window.addEventListener('keydown', handler)
     return () => window.removeEventListener('keydown', handler)
   }, [onClose])
 
-  // Prevent body scroll while modal open
   useEffect(() => {
     document.body.style.overflow = 'hidden'
     return () => { document.body.style.overflow = '' }
@@ -25,19 +24,29 @@ function CVModal({ onClose }) {
 
   return (
     <div
-      className="fixed inset-0 z-[999] flex items-center justify-center p-4 md:p-8"
+      className="fixed inset-0 z-[999] flex items-end md:items-center justify-center md:p-8"
       style={{ background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(6px)' }}
       onClick={handleBackdrop}
     >
       <div
-        className="relative w-full max-w-4xl h-[90vh] rounded-2xl overflow-hidden flex flex-col"
-        style={{ background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)', border: '1px solid rgba(139,92,246,0.3)', boxShadow: '0 25px 80px rgba(139,92,246,0.25)' }}
+        className="relative w-full md:max-w-4xl md:h-[90vh] flex flex-col rounded-t-3xl md:rounded-2xl overflow-hidden"
+        style={{
+          background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)',
+          border: '1px solid rgba(139,92,246,0.3)',
+          boxShadow: '0 25px 80px rgba(139,92,246,0.25)',
+          maxHeight: '95vh',
+        }}
       >
+        {/* Drag handle — mobile only */}
+        <div className="md:hidden flex justify-center pt-3 pb-1 shrink-0">
+          <div className="w-10 h-1 rounded-full bg-white/20" />
+        </div>
+
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 shrink-0">
+        <div className="flex items-center justify-between px-5 py-3 border-b border-white/10 shrink-0">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-violet-600/30 border border-violet-500/40 flex items-center justify-center">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <div className="w-8 h-8 rounded-lg bg-violet-600/30 border border-violet-500/40 flex items-center justify-center shrink-0">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>
               </svg>
             </div>
@@ -50,9 +59,9 @@ function CVModal({ onClose }) {
             <a
               href="/Abel's Resume.pdf"
               download="Abel's Resume.pdf"
-              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-violet-600 hover:bg-violet-500 text-white text-xs font-medium transition-all duration-200 active:scale-95"
+              className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-violet-600 hover:bg-violet-500 text-white text-xs font-medium transition-all duration-200 active:scale-95"
             >
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
               </svg>
               Download
@@ -69,15 +78,54 @@ function CVModal({ onClose }) {
           </div>
         </div>
 
-        {/* PDF Viewer */}
-        <div className="flex-1 overflow-hidden p-4">
-          <iframe
-            src="/Abel's Resume.pdf#toolbar=0&navpanes=0&scrollbar=1"
-            title="Abel's Resume"
-            className="w-full h-full rounded-xl"
-            style={{ border: 'none', background: '#fff' }}
-          />
-        </div>
+        {/* PDF viewer — desktop | fallback card — mobile */}
+        {isMobile ? (
+          <div className="flex flex-col items-center justify-center gap-6 px-6 py-10">
+            {/* Preview icon */}
+            <div className="w-20 h-20 rounded-2xl bg-violet-600/20 border border-violet-500/30 flex items-center justify-center">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>
+                <line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
+              </svg>
+            </div>
+            <div className="text-center">
+              <p className="text-white font-semibold text-base mb-1">Abel Assefa — CV</p>
+              <p className="text-gray-400 text-sm">PDF preview isn't supported in mobile browsers. Open or download it directly.</p>
+            </div>
+            <div className="flex flex-col w-full gap-3">
+              <a
+                href="/Abel's Resume.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-sm font-semibold transition-all duration-200 active:scale-95"
+              >
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                </svg>
+                Open in Browser
+              </a>
+              <a
+                href="/Abel's Resume.pdf"
+                download="Abel's Resume.pdf"
+                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-white/20 text-white text-sm font-semibold transition-all duration-200 active:scale-95 hover:bg-white/10"
+              >
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                Download PDF
+              </a>
+            </div>
+          </div>
+        ) : (
+          <div className="flex-1 overflow-hidden p-4">
+            <iframe
+              src="/Abel's Resume.pdf#toolbar=0&navpanes=0&scrollbar=1"
+              title="Abel's Resume"
+              className="w-full h-full rounded-xl"
+              style={{ border: 'none', background: '#fff' }}
+            />
+          </div>
+        )}
       </div>
     </div>
   )
