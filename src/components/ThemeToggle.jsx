@@ -56,7 +56,6 @@ export default function ThemeToggle({ theme, mode, setMode }) {
         }`}
       >
         <CurrentIcon />
-        <span className="hidden sm:inline text-xs">{current.label}</span>
         <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"
           style={{ transform: open ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }}>
           <polyline points="6 9 12 15 18 9"/>
@@ -66,7 +65,7 @@ export default function ThemeToggle({ theme, mode, setMode }) {
       {/* Dropdown */}
       {open && (
         <div
-          className={`absolute right-0 mt-2 w-36 rounded-xl border overflow-hidden shadow-xl z-50 ${
+          className={`absolute right-0 mt-2 w-14 rounded-xl border overflow-hidden shadow-xl z-50 ${
             dark
               ? 'bg-[#1a1a2e] border-white/10'
               : 'bg-white border-gray-200'
@@ -79,7 +78,8 @@ export default function ThemeToggle({ theme, mode, setMode }) {
               <button
                 key={value}
                 onClick={() => { setMode(value); setOpen(false) }}
-                className={`w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium transition-colors duration-150 cursor-pointer ${
+                title={label}
+                className={`w-full flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium transition-colors duration-150 cursor-pointer ${
                   active
                     ? 'text-violet-400 bg-violet-500/10'
                     : dark
@@ -88,9 +88,8 @@ export default function ThemeToggle({ theme, mode, setMode }) {
                 }`}
               >
                 <Icon />
-                {label}
                 {active && (
-                  <svg className="ml-auto" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                  <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
                     <polyline points="20 6 9 17 4 12"/>
                   </svg>
                 )}
