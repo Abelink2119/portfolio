@@ -6,10 +6,88 @@ const cards = [
   { icon: '⬡',   title: 'Solution Architecture',   desc: 'Designing scalable, resilient system architectures that align with business goals and growth.' },
 ]
 
+function CVModal({ onClose }) {
+  // Close on backdrop click
+  const handleBackdrop = (e) => { if (e.target === e.currentTarget) onClose() }
+
+  // Close on Escape key
+  useEffect(() => {
+    const handler = (e) => { if (e.key === 'Escape') onClose() }
+    window.addEventListener('keydown', handler)
+    return () => window.removeEventListener('keydown', handler)
+  }, [onClose])
+
+  // Prevent body scroll while modal open
+  useEffect(() => {
+    document.body.style.overflow = 'hidden'
+    return () => { document.body.style.overflow = '' }
+  }, [])
+
+  return (
+    <div
+      className="fixed inset-0 z-[999] flex items-center justify-center p-4 md:p-8"
+      style={{ background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(6px)' }}
+      onClick={handleBackdrop}
+    >
+      <div
+        className="relative w-full max-w-4xl h-[90vh] rounded-2xl overflow-hidden flex flex-col"
+        style={{ background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)', border: '1px solid rgba(139,92,246,0.3)', boxShadow: '0 25px 80px rgba(139,92,246,0.25)' }}
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 shrink-0">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-violet-600/30 border border-violet-500/40 flex items-center justify-center">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>
+              </svg>
+            </div>
+            <div>
+              <p className="text-white font-semibold text-sm">Abel Assefa</p>
+              <p className="text-gray-400 text-xs">Curriculum Vitae</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <a
+              href="/Abel's Resume.pdf"
+              download="Abel's Resume.pdf"
+              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-violet-600 hover:bg-violet-500 text-white text-xs font-medium transition-all duration-200 active:scale-95"
+            >
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              Download
+            </a>
+            <button
+              onClick={onClose}
+              className="w-8 h-8 rounded-lg bg-white/5 hover:bg-white/15 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white transition-all duration-200"
+              aria-label="Close"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        {/* PDF Viewer */}
+        <div className="flex-1 overflow-hidden p-4">
+          <iframe
+            src="/Abel's Resume.pdf#toolbar=0&navpanes=0&scrollbar=1"
+            title="Abel's Resume"
+            className="w-full h-full rounded-xl"
+            style={{ border: 'none', background: '#fff' }}
+          />
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function AboutSection({ theme }) {
   const dark = theme === 'dark'
   const ref = useRef(null)
   const [visible, setVisible] = useState(false)
+  const [showCV, setShowCV] = useState(false)
 
   useEffect(() => {
     const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setVisible(true) }, { threshold: 0.15 })
@@ -18,74 +96,96 @@ export default function AboutSection({ theme }) {
   }, [])
 
   return (
-    <section id="about" className="relative z-10 py-28 px-6">
-      <div
-        ref={ref}
-        className={`max-w-5xl mx-auto transition-all duration-700 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
-      >
-        <h2 className={`text-4xl md:text-5xl font-bold text-center mb-16 ${dark ? 'text-white' : 'text-gray-900'}`}>
-          About <span className="text-violet-400">Me</span>
-        </h2>
+    <>
+      <section id="about" className="relative z-10 py-28 px-6">
+        <div
+          ref={ref}
+          className={`max-w-5xl mx-auto transition-all duration-700 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+        >
+          <h2 className={`text-4xl md:text-5xl font-bold text-center mb-16 ${dark ? 'text-white' : 'text-gray-900'}`}>
+            About <span className="text-violet-400">Me</span>
+          </h2>
 
-        <div className="grid md:grid-cols-2 gap-12 items-start">
-          {/* Left — bio */}
-          <div>
-            <h3 className={`text-xl font-semibold mb-4 ${dark ? 'text-white' : 'text-gray-900'}`}>
-              Software Engineer &amp; Solution Architect
-            </h3>
-            <p className={`mb-4 leading-relaxed text-base ${dark ? 'text-gray-400' : 'text-gray-600'}`}>
-              With 2+ years of hands-on experience, I build production-ready solutions across web, mobile, and cloud.
-              I specialize in full-stack development, DevOps automation, and designing scalable system architectures.
-            </p>
-            <p className={`mb-8 leading-relaxed text-base ${dark ? 'text-gray-400' : 'text-gray-600'}`}>
-              Graduated with a BSc in Software Engineering from Woldia University (CGPA 3.31), I&apos;m driven by
-              turning complex problems into elegant, maintainable software — and I&apos;m always pushing into new
-              technologies to stay sharp.
-            </p>
-            <div className="flex gap-4 flex-wrap">
-              <button
-                onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-                className="px-6 py-2.5 rounded-full bg-violet-600 hover:bg-violet-500 active:scale-95 text-white text-sm font-medium transition-all duration-200 cursor-pointer"
-              >
-                Get In Touch
-              </button>
-              <a
-                href="/Abel's Resume.pdf"
-                download="Abel's Resume.pdf"
-                className={`px-6 py-2.5 rounded-full border text-sm font-medium transition-all duration-200 inline-flex items-center gap-2 ${
-                  dark
-                    ? 'border-white/20 text-white hover:bg-white/10'
-                    : 'border-gray-300 text-gray-700 hover:bg-gray-100'
-                }`}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
-                </svg>
-                Download CV
-              </a>
+          <div className="grid md:grid-cols-2 gap-12 items-start">
+            {/* Left — bio */}
+            <div>
+              <h3 className={`text-xl font-semibold mb-4 ${dark ? 'text-white' : 'text-gray-900'}`}>
+                Software Engineer &amp; Solution Architect
+              </h3>
+              <p className={`mb-4 leading-relaxed text-base ${dark ? 'text-gray-400' : 'text-gray-600'}`}>
+                With 2+ years of hands-on experience, I build production-ready solutions across web, mobile, and cloud.
+                I specialize in full-stack development, DevOps automation, and designing scalable system architectures.
+              </p>
+              <p className={`mb-8 leading-relaxed text-base ${dark ? 'text-gray-400' : 'text-gray-600'}`}>
+                Graduated with a BSc in Software Engineering from Woldia University (CGPA 3.31), I&apos;m driven by
+                turning complex problems into elegant, maintainable software — and I&apos;m always pushing into new
+                technologies to stay sharp.
+              </p>
+              <div className="flex gap-3 flex-wrap">
+                <button
+                  onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+                  className="px-6 py-2.5 rounded-full bg-violet-600 hover:bg-violet-500 active:scale-95 text-white text-sm font-medium transition-all duration-200 cursor-pointer"
+                >
+                  Get In Touch
+                </button>
+
+                {/* View CV */}
+                <button
+                  onClick={() => setShowCV(true)}
+                  className={`px-6 py-2.5 rounded-full border text-sm font-medium transition-all duration-200 inline-flex items-center gap-2 active:scale-95 cursor-pointer ${
+                    dark
+                      ? 'border-violet-500/50 text-violet-300 hover:bg-violet-500/10'
+                      : 'border-violet-400 text-violet-600 hover:bg-violet-50'
+                  }`}
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                  </svg>
+                  View CV
+                </button>
+
+                {/* Download CV */}
+                <a
+                  href="/Abel's Resume.pdf"
+                  download="Abel's Resume.pdf"
+                  className={`px-6 py-2.5 rounded-full border text-sm font-medium transition-all duration-200 inline-flex items-center gap-2 ${
+                    dark
+                      ? 'border-white/20 text-white hover:bg-white/10'
+                      : 'border-gray-300 text-gray-700 hover:bg-gray-100'
+                  }`}
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+                  </svg>
+                  Download CV
+                </a>
+              </div>
+            </div>
+
+            {/* Right — cards */}
+            <div className="flex flex-col gap-4">
+              {cards.map((c) => (
+                <div
+                  key={c.title}
+                  className={`flex items-start gap-4 p-5 rounded-xl border transition-all duration-200 ${
+                    dark
+                      ? 'bg-white/5 border-white/10 hover:border-violet-500/50 hover:bg-white/8'
+                      : 'bg-white border-gray-200 hover:border-violet-400 shadow-sm hover:shadow-md'
+                  }`}
+                >
+                  <span className="text-violet-400 text-lg mt-0.5 w-7 shrink-0 font-mono">{c.icon}</span>
+                  <div>
+                    <h4 className={`font-semibold mb-1 ${dark ? 'text-white' : 'text-gray-900'}`}>{c.title}</h4>
+                    <p className={`text-sm leading-relaxed ${dark ? 'text-gray-400' : 'text-gray-600'}`}>{c.desc}</p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
-
-          {/* Right — cards */}
-          <div className="flex flex-col gap-4">
-            {cards.map((c) => (
-              <div
-                key={c.title}
-                className={`flex items-start gap-4 p-5 rounded-xl border transition-all duration-200 ${
-                  dark
-                    ? 'bg-white/5 border-white/10 hover:border-violet-500/50 hover:bg-white/8'
-                    : 'bg-white border-gray-200 hover:border-violet-400 shadow-sm hover:shadow-md'
-                }`}
-              >
-                <span className="text-violet-400 text-lg mt-0.5 w-7 shrink-0 font-mono">{c.icon}</span>
-                <div>
-                  <h4 className={`font-semibold mb-1 ${dark ? 'text-white' : 'text-gray-900'}`}>{c.title}</h4>
-                  <p className={`text-sm leading-relaxed ${dark ? 'text-gray-400' : 'text-gray-600'}`}>{c.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      {showCV && <CVModal onClose={() => setShowCV(false)} />}
+    </>
   )
 }
