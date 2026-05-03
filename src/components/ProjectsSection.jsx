@@ -35,6 +35,16 @@ const PROJECTS = [
   // ── Mobile Projects ───────────────────────────────────────────
   {
     type: 'mobile',
+    title: 'RideEt — Ride Hailing App',
+    desc: 'End-to-end ride hailing app with real-time driver matching, live GPS tracking, fare estimation, and in-app payments. Built with Flutter frontend and a robust Spring Boot backend on MS SQL.',
+    tags: ['Flutter', 'Spring Boot', 'MS SQL', 'WebSockets'],
+    img: 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=700&q=80',
+    live: '#',
+    github: '#',
+    featured: true,
+  },
+  {
+    type: 'mobile',
     title: 'Gebeta Food Delivery',
     desc: 'Cross-platform food delivery app with real-time order tracking, driver location updates via WebSockets, and integrated payment gateway.',
     tags: ['React Native', 'Node.js', 'WebSockets', 'MongoDB'],
