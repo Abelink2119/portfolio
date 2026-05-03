@@ -32,6 +32,16 @@ const PROJECTS = [
     github: '#',
     featured: false,
   },
+  {
+    type: 'web',
+    title: 'Digital Wallet & Payment System',
+    desc: 'Secure digital wallet platform with multi-currency support, peer-to-peer transfers, transaction history, and real-time balance updates. Enterprise-grade security with Spring Boot backend and Next.js frontend.',
+    tags: ['Next.js', 'Spring Boot', 'MS SQL', 'JWT'],
+    img: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=700&q=80',
+    live: '#',
+    github: '#',
+    featured: false,
+  },
   // ── Mobile Projects ───────────────────────────────────────────
   {
     type: 'mobile',
@@ -69,6 +79,16 @@ const PROJECTS = [
     desc: 'Feature-rich social networking app with stories, real-time messaging, media sharing, and push notifications built for Ethiopian users.',
     tags: ['Flutter', 'Firebase', 'Dart', 'FCM'],
     img: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=700&q=80',
+    live: '#',
+    github: '#',
+    featured: false,
+  },
+  {
+    type: 'mobile',
+    title: 'Expense Tracker App',
+    desc: 'Personal finance mobile app for tracking income and expenses with category breakdowns, monthly reports, budget alerts, and cloud sync across devices.',
+    tags: ['React Native', 'Node.js', 'Express.js', 'MongoDB'],
+    img: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=700&q=80',
     live: '#',
     github: '#',
     featured: false,
